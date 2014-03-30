@@ -1,0 +1,12 @@
+{
+    "Module Index"  : 0,
+    "Module Inputs" : {
+        "Status"                : "SUCCESS",
+        "This is an Input Key"  : "Running Test 1"
+    },
+    "Expected Module Outputs" : {
+        "Status"                : "SUCCESS",
+        "This is an Output Key" : "Running Test 1"
+    }
+}
+

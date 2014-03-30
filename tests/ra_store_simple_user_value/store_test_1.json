@@ -1,0 +1,12 @@
+{
+    "Module Index"  : 4,
+    "Module Inputs" : {
+        "Access Token"          : "MYACCESSTOKEN",
+        "Value To Store"        : "Store this Value"
+    },
+    "Expected Module Outputs" : {
+        "Status"                : "SUCCESS",
+        "Storage Key ID"        : "<Dynamic Value>"
+    }
+}
+

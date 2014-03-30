@@ -1,0 +1,13 @@
+{
+    "Module Index"  : 1,
+    "Module Inputs" : {
+        "Storage Key ID"        : "Storage_Key_EXAMPLE"
+    },
+    "Expected Module Outputs" : {
+        "Status"                : "FAILED",
+        "Storage Key ID"        : "Storage_Key_EXAMPLE",
+        "Message"               : "Delete Failed to Find Stored Value in Key(Storage_Key_EXAMPLE)",
+        "Stored Value"          : ""
+    }
+}
+

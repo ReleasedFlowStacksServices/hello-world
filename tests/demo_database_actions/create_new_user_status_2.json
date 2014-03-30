@@ -1,0 +1,16 @@
+{
+    "Module Index"  : 8,
+    "Module Inputs" : {
+        "DB Conn Str"               : "mysql://demo_dbuser:123456@bi-brain-fulfillments-intraday-investments-dev.c1odujvremrc.us-east-1.rds.amazonaws.com:3306/demo_database",
+        "Schema File"               : "demo_database_schema.py",
+        "Schema Class Name"         : "LT_UserStatus",
+        "Schema Field Data"         : {
+                                            "status"    : "INACTIVE"
+        }
+    },
+    "Expected Module Outputs" : {
+        "Status"                    : "SUCCESS",
+        "Error"                     : ""
+    }
+}
+

@@ -1,0 +1,21 @@
+{
+    "Module Index"  : 8,
+    "Module Inputs" : {
+        "DB Conn Str"               : "mysql://demo_dbuser:123456@bi-brain-fulfillments-intraday-investments-dev.c1odujvremrc.us-east-1.rds.amazonaws.com:3306/demo_database",
+        "Schema File"               : "demo_database_schema.py",
+        "Schema Class Name"         : "PT_UserAccount",
+        "Schema Field Data"         : {
+                                            "first_name"            : "Another",
+                                            "last_name"             : "User",
+                                            "user_name"             : "fb_user_12347",
+                                            "password"              : "Password",
+                                            "email"                 : "notarealuseraddressagain@gmail.com",
+                                            "user_status_sym_id"    : 1
+        }
+    },
+    "Expected Module Outputs" : {
+        "Status"                    : "SUCCESS",
+        "Error"                     : ""
+    }
+}
+
