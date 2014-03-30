@@ -1,12 +1,10 @@
 *.pyc
 *.pyo
 *.swp
-*.json
 
 */*.pyc
 */*.pyo
 */*.swp
-*/*.json
 
 */*/*.pyc
 */*/*.pyo

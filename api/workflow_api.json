@@ -1,0 +1,285 @@
+{
+    "FlowStacks Workflow Project Description"  : {
+        "Version"               : 1,
+        "Purpose"               : "FlowStacks Hello World",
+        "Contact"               : "common@flowstacks.com",
+        "Developer Website"     : "flowstacks.com",
+        "Market"                : "Hello World",
+        "Industry"              : "Hello World",
+        "Tags"                  : [ 
+                                    "Hello World"
+        ]
+    },
+    "FlowStacks Workflow Project Source API"  : [
+        {
+            "Meta Data"     : {
+                "Module Name"   : "An Example Module Name",
+                "Description"   : "A Description of this Module and its purpose",
+                "Author ID"     : "Your Name",
+                "Contact"       : "your_email@email.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_example_module.py",
+                "Module"        : "ra_example_module",
+                "Class Name"    : "RA_ExampleModule",
+                "Inputs"        : {
+                                    "This is an Input Key"  : "String"
+                },
+                "Outputs"       : {
+                                    "Status"                : "String",
+                                    "This is an Output Key" : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Delete Simple User Value",
+                "Description"   : "Delete the Simple User Value stored on the Environment in the Storage Key ID",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2013"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_delete_simple_user_value.py",
+                "Module"        : "ra_delete_simple_user_value",
+                "Class Name"    : "RA_DeleteSimpleUserValue",
+                "Inputs"        : {
+                                    "Storage Key ID"        : "String"
+                },
+                "Outputs"       : {
+                                    "Status"                : "String",
+                                    "Stored Value"          : "String",
+                                    "Storage Key ID"        : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Get Simple User Value",
+                "Description"   : "Get the Simple User Value stored on the Environment in the Storage Key ID",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2013"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_get_simple_user_value.py",
+                "Module"        : "ra_get_simple_user_value",
+                "Class Name"    : "RA_GetSimpleUserValue",
+                "Inputs"        : {
+                                    "Storage Key ID"        : "String"
+                },
+                "Outputs"       : {
+                                    "Status"                : "String",
+                                    "Storage Key ID"        : "String",
+                                    "Stored Value"          : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Send Email Template To User",
+                "Description"   : "Send an email template that is filled-in by this module to the users.  Replaces <USER.NAME> with the name field.",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2013"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_send_email_template_to_user.py",
+                "Module"        : "ra_send_email_template_to_user",
+                "Class Name"    : "RA_SendEmailTemplateToUsers",
+                "Inputs"        : {
+                                    "User Name"             : "String",
+                                    "User Email Address"    : "String",
+                                    "From"                  : "String",
+                                    "Subject"               : "String",
+                                    "Email Template"        : "String",
+                                    "Gmail User"            : "String",
+                                    "Gmail Password"        : "String"
+                },
+                "Outputs"       : {
+                                    "Status"                : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Store Simple User Value",
+                "Description"   : "Store the Simple User Value into the Environment",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2013"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_store_simple_user_value.py",
+                "Module"        : "ra_store_simple_user_value",
+                "Class Name"    : "RA_StoreSimpleUserValue",
+                "Inputs"        : {
+                                    "Access Token"          : "String",
+                                    "Value To Store"        : "String"      
+                },
+                "Outputs"       : {               
+                                    "Status"                : "String",
+                                    "Storage Key ID"        : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Create User Database",
+                "Description"   : "Create User Database",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_create_user_database.py",
+                "Module"        : "ra_create_user_database",
+                "Class Name"    : "RA_FlowStacks_CreateUserDatabase",
+                "Inputs"        : {
+                                    "Database Host Endpoint"            : "String",
+                                    "Database Port"                     : "String",
+                                    "Database Name"                     : "String",
+                                    "Database Type"                     : "String",
+                                    "Database Debug"                    : "String",
+                                    "Database Auto Commit"              : "String",
+                                    "Database Auto Flush"               : "String",
+                                    "Database FlowStacks User Name"     : "String",
+                                    "Database FlowStacks User Password" : "String",
+                                    "Database New User Name"            : "String",
+                                    "Database New User Password"        : "String"
+                },
+                "Outputs"       : {
+                                    "Status"    : "String",
+                                    "Error"     : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Delete User Database",
+                "Description"   : "Delete User Database",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_delete_user_database.py",
+                "Module"        : "ra_delete_user_database",
+                "Class Name"    : "RA_FlowStacks_DeleteUserDatabase",
+                "Inputs"        : {
+                                    "Database Host Endpoint"            : "String",
+                                    "Database Port"                     : "String",
+                                    "Database Name"                     : "String",
+                                    "Database Type"                     : "String",
+                                    "Database Debug"                    : "String",
+                                    "Database Auto Commit"              : "String",
+                                    "Database Auto Flush"               : "String",
+                                    "Database FlowStacks User Name"     : "String",
+                                    "Database FlowStacks User Password" : "String",
+                                    "Database New User Name"            : "String",
+                                    "Database New User Password"        : "String"
+                },
+                "Outputs"       : {
+                                    "Status"    : "String",
+                                    "Error"     : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Apply Schema Changes",
+                "Description"   : "Apply Schema Changes",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_apply_schema_changes.py",
+                "Module"        : "ra_apply_schema_changes",
+                "Class Name"    : "RA_FlowStacks_ApplySchemaChanges",
+                "Inputs"        : {
+                                    "FlowStacks Project Token"          : "String",
+                                    "Schema File"                       : "String",
+                                    "Database Host Endpoint"            : "String",
+                                    "Database Port"                     : "String",
+                                    "Database Name"                     : "String",
+                                    "Database Type"                     : "String",
+                                    "Database Debug"                    : "String",
+                                    "Database Auto Commit"              : "String",
+                                    "Database Auto Flush"               : "String",
+                                    "Database New User Name"            : "String",
+                                    "Database New User Password"        : "String"
+                },
+                "Outputs"       : {
+                                    "Status"    : "String",
+                                    "Error"     : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Create New Database Record",
+                "Description"   : "Creates a new database record",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_db_flowstacks_create_new_record.py",
+                "Module"        : "ra_db_flowstacks_create_new_record",
+                "Class Name"    : "RA_FlowStacks_DB_CreateNewRecord",
+                "Inputs"        : {
+                                    "DB Conn Str"               : "String",
+                                    "Schema File"               : "String",
+                                    "Schema Class Name"         : "String",
+                                    "Schema Field Data"         : "String"
+                },
+                "Outputs"       : {
+                                    "Status"    : "String",
+                                    "Error"     : "String"
+                }
+            }             
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Get User Accounts",
+                "Description"   : "Get User Accounts",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "common@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_db_get_user_accounts.py",
+                "Module"        : "ra_db_get_user_accounts",
+                "Class Name"    : "RA_DB_GetUserAccounts",
+                "Inputs"        : {
+                                    "DB Conn Str"           : "String",
+                                    "Query Type"            : "String",
+                                    "First Name"            : "String",
+                                    "Last Name"             : "String",
+                                    "Password"              : "String",
+                                    "Email"                 : "String",
+                                    "User Name"             : "String",
+                                    "User Status ID"        : "Integer"
+                },
+                "Outputs"       : {
+                                    "Status"    : "String",
+                                    "Records"   : "List",
+                                    "Error"     : "String"
+                }
+            }
+        }
+    ]
+}
+
