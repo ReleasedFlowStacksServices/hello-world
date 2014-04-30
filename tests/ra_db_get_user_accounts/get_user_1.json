@@ -1,7 +1,7 @@
 {
     "Module Index"  : 9,
     "Module Inputs" : {
-        "DB Conn Str"   : "mysql://demo_dbuser:123456@bi-brain-fulfillments-intraday-investments-dev.c1odujvremrc.us-east-1.rds.amazonaws.com:3306/demo_database",
+        "DB Conn Str"   : "mysql://<REPLACE WITH YOUR MYSQL USER>:<REPLACE WITH YOUR MYSQL PASSWORD>@<REPLACE WITH YOUR MYSQL HOST>:<REPLACE WITH YOUR MYSQL PORT>/<REPLACE WITH YOUR MYSQL DATABASE NAME>",
         "Query Type"    : "Get By User Name",
         "User Name"     : "user12345"
     },

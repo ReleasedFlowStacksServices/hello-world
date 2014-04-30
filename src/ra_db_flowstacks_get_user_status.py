@@ -3,39 +3,43 @@ from datetime                       import datetime, date, timedelta
 
 sys.path.append("/flowstacks/public-cloud-src")
 from logger.logger import Logger
-from modules.base_api.fs_web_tier_base_work_item     import FSWebTierBaseWorkItem
-from connectors.redis.redis_pickle_application       import RedisPickleApplication
+from modules.base_api.fs_web_tier_base_work_item    import FSWebTierBaseWorkItem
+from connectors.redis.redis_pickle_application      import RedisPickleApplication
 
-# FlowStacks Example Job:
-# Out of convention FlowStacks REST API Jobs begin with "RA_"
-class RA_ExampleModule(FSWebTierBaseWorkItem):
+# Endpoint Database Schema Files:
+from dev_db_schema                                  import LT_UserStatus, PT_UserAccount
+from prod_db_schema                                 import LT_UserStatus, PT_UserAccount
+
+class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
 
     def __init__(self, json_data):
-        # The RA_ExampleModule becomes the prefix for the Job when it is logged by the system
-        FSWebTierBaseWorkItem.__init__(self, "RA_ExampleModule", json_data)
+        FSWebTierBaseWorkItem.__init__(self, "RA_DBF_GUS", json_data)
 
         """ Constructor Serialization taking HTTP Post-ed JSON into Python members """
         # Define Inputs and Outputs for the Job to serialize over HTTP
         try:
 
             # INPUTS:
-            self.m_input_key                        = json_data["This is an Input Key"]
+            self.m_db_app_name                  = str(json_data["DB To Use"])
+            self.m_get_status                   = str(json_data["User Status"])
 
             # OUTPUTS:
-            self.m_results["Status"]                = "FAILED"
-            self.m_results["Error"]                 = ""
-            self.m_results["This is an Output Key"] = "NO OUTPUT"
+            self.m_results["Status"]            = "FAILED"
+            self.m_results["Error"]             = ""
+            self.m_results["Records"]           = []
 
             # MEMBERS:
-        
-        # Return the exact Error with the failure:
-        except Exception,e:
+            self.m_db_record                    = None
 
+            if "Debug" in json_data:
+                self.m_debug                    = bool(str(json_data["Debug"]) == "True")
+
+        except Exception,e:
             import os, traceback
             exc_type, exc_obj, exc_tb = sys.exc_info()
             reason = json.dumps({ "Module" : str(self.__class__.__name__), "Error Type" : str(exc_type.__name__), "Line Number" : exc_tb.tb_lineno, "Error Message" : str(exc_obj.message), "File Name" : str(os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]) })
             raise Exception(reason)
-
+        # end of try/catch
 
     # end of  __init__
 
@@ -51,30 +55,43 @@ class RA_ExampleModule(FSWebTierBaseWorkItem):
 
         self.lg("Start Handle Module Startup", 5)
 
+        error_msg                   = ""
         self.m_state                = "Results"
-        self.m_results["Status"]    = "FAILED"
+        
+        try:
+            
+            self.lg("Connect and Commit User DB(" + str(self.m_db_app_name) + ")", 5)
 
-        db_app_id   = 0
-        for db_app in self.m_db_apps:
+            self.create_database_record() 
 
-            self.lg("Job has Access to Database Application(" + str(db_app_id) + ") with Name(" + str(db_app) + ")", 5)
-            db_app_id   += 1
+            db_result_hash = self.just_add_record_to_database(self.m_db_app_name, self.m_db_record)
 
-        # end of for all Database Applications
+            if db_result_hash["Status"] == "SUCCESS":
+                self.m_results["Status"]    = "SUCCESS"
+                self.m_results["Error"]     = ""
+
+            else:
+                self.lg("ERROR: Failed to Add Record(" + str(record) + ") to DB", 0)
+                self.m_results["Status"]    = "Failed to Add Database Record"
+                self.m_results["Error"]     = db_result_hash["Error"]
+
+        except Exception,e:
+
+            self.lg("Adding User Status Failed Error(" + str(error_msg) + ") Exception(" + str(e) + ")", 0)
+            self.m_results["Status"]    = "FAILED"
+            self.m_results["Error"]     = error_msg
+
+        # end of adding user record to db
 
         self.lg("Done Module Startup State(" + self.m_state + ")", 5)
 
         return None
     # end of handle_startup
 
-    
+
     def handle_processing_results(self):
 
         self.lg("Processing Results", 5)
-
-        # For this Example just show the Input can be set to the Output for testing
-        self.m_results["Status"]                = "SUCCESS"
-        self.m_results["This is an Output Key"] = str(self.m_input_key)
 
         self.lg("Done Processing Results", 5)
 
@@ -87,6 +104,14 @@ class RA_ExampleModule(FSWebTierBaseWorkItem):
 # Helpers
 #
 ###############################################################################
+
+
+    def create_database_record(self):
+    
+        self.m_db_record    = LT_UserStatus(status = self.m_new_status)
+
+        return None
+    # end of create_database_record
 
 
 ###############################################################################
@@ -102,10 +127,6 @@ class RA_ExampleModule(FSWebTierBaseWorkItem):
         if  self.m_state == "Startup":
             self.lg("Startup", 5)
             self.handle_startup()
-
-        elif self.m_state == "Results":
-            # found in the base
-            self.lg("Result Cleanup", 5)
             self.handle_processing_results()
             self.base_handle_results_and_cleanup(self.m_result_details, self.m_completion_details)
 
@@ -118,6 +139,6 @@ class RA_ExampleModule(FSWebTierBaseWorkItem):
         return self.m_is_done
     # end of perform_task
 
-# end of RA_ExampleModule
+# end of RA_FlowStacks_DB_GetDeveloperAccount
 
 

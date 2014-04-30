@@ -1,4 +1,4 @@
-import sys, uuid
+import sys, uuid, json
 from datetime                       import datetime, date, timedelta
 
 sys.path.append("/flowstacks/public-cloud-src")
@@ -12,25 +12,37 @@ class RA_FlowStacks_CreateUserDatabase(FSWebTierBaseWorkItem):
     def __init__(self, json_data):
         FSWebTierBaseWorkItem.__init__(self, "RA_FlowStacks_CreateUserDatabase", json_data)
 
-        # INPUTS:
-        self.m_db_host_endpoint                 = json_data["Database Host Endpoint"]
-        self.m_db_port                          = json_data["Database Port"]
-        self.m_db_name                          = json_data["Database Name"]
-        self.m_db_type                          = json_data["Database Type"]
-        self.m_db_debug                         = json_data["Database Debug"]
-        self.m_db_auto_commit                   = json_data["Database Auto Commit"] == "True"
-        self.m_db_auto_flush                    = json_data["Database Auto Flush"] == "True"
-        self.m_db_FS_user_name                  = json_data["Database FlowStacks User Name"]
-        self.m_db_FS_user_password              = json_data["Database FlowStacks User Password"]
-        self.m_db_user_name                     = json_data["Database New User Name"]
-        self.m_db_user_password                 = json_data["Database New User Password"]
+        """ Constructor Serialization taking HTTP Post-ed JSON into Python members """
+        # Define Inputs and Outputs for the Job to serialize over HTTP
+        try:
 
-        # OUTPUTS:
-        self.m_results["Status"]                = "FAILED"
-        self.m_results["Error"]                 = ""
+            # INPUTS:
+            self.m_db_host_endpoint                 = json_data["Database Host Endpoint"]
+            self.m_db_port                          = json_data["Database Port"]
+            self.m_db_name                          = str(json_data["Database Name"]).replace("-", "").replace("_", "")
+            self.m_db_type                          = json_data["Database Type"]
+            self.m_db_debug                         = json_data["Database Debug"]
+            self.m_db_auto_commit                   = json_data["Database Auto Commit"] == "True"
+            self.m_db_auto_flush                    = json_data["Database Auto Flush"] == "True"
+            self.m_db_FS_user_name                  = json_data["Database FlowStacks User Name"]
+            self.m_db_FS_user_password              = json_data["Database FlowStacks User Password"]
+            self.m_db_user_name                     = json_data["Database New User Name"]
+            self.m_db_user_password                 = json_data["Database New User Password"]
 
-        # MEMBERS:
-        self.m_debug                            = False
+            # OUTPUTS:
+            self.m_results["Status"]                = "FAILED"
+            self.m_results["Error"]                 = ""
+
+            # MEMBERS:
+            self.m_debug                            = False
+
+        # Return the exact Error with the failure:
+        except Exception,e:
+
+            import os, traceback
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            reason = json.dumps({ "Module" : str(self.__class__.__name__), "Error Type" : str(exc_type.__name__), "Line Number" : exc_tb.tb_lineno, "Error Message" : str(exc_obj.message), "File Name" : str(os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]) })
+            raise Exception(reason)
 
     # end of  __init__
 
@@ -60,7 +72,7 @@ class RA_FlowStacks_CreateUserDatabase(FSWebTierBaseWorkItem):
             engine      = sqlalchemy.create_engine(connection_str)
 
             error_msg   = "Creating New Database Failed"
-            new_db      = "CREATE DATABASE IF NOT EXISTS " + str(self.m_db_name) + ";"
+            new_db      = "CREATE DATABASE IF NOT EXISTS " + str(self.m_db_name).replace("_", "").replace("-", "") + ";"
             self.lg("Creating New DB(" + str(self.m_db_name) + ")", 5)
             engine.execute(new_db)
 

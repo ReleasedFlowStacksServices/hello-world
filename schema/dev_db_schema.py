@@ -16,7 +16,6 @@ Base = declarative_base()
 class LT_UserStatus(Base):
 
     __tablename__   = 'user_status'
-    __table_args__  = {'schema': "demo_database"}
     
     id              = Column(Integer, primary_key = True)
     status          = Column(String(30))
@@ -34,7 +33,6 @@ class LT_UserStatus(Base):
 class PT_UserAccount(Base):
 
     __tablename__               = 'user_acccounts'
-    __table_args__              = {'schema': "demo_database"}
 
     id                          = Column(Integer, primary_key=True)
     first_name                  = Column(String(80))

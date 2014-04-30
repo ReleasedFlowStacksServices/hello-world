@@ -1,12 +1,15 @@
 *.pyc
 *.pyo
 *.swp
+*.db
 
 */*.pyc
 */*.pyo
 */*.swp
+*/*.db
 
 */*/*.pyc
 */*/*.pyo
 */*/*.swp
+*/*/*.db
 

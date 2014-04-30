@@ -1,4 +1,4 @@
-import sys, uuid
+import sys, uuid, json
 from datetime                       import datetime, date, timedelta
 
 sys.path.append("/flowstacks/public-cloud-src")
@@ -12,25 +12,36 @@ class RA_FlowStacks_ApplySchemaChanges(FSWebTierBaseWorkItem):
     def __init__(self, json_data):
         FSWebTierBaseWorkItem.__init__(self, "RA_FlowStacks_ApplySchemaChanges", json_data)
 
-        # INPUTS:
-        self.m_FS_project_token                 = str(json_data["FlowStacks Project Token"])
-        self.m_project_schema_file              = str(json_data["Schema File"])
-        self.m_db_host_endpoint                 = str(json_data["Database Host Endpoint"])
-        self.m_db_port                          = str(json_data["Database Port"])
-        self.m_db_name                          = str(json_data["Database Name"])
-        self.m_db_type                          = str(json_data["Database Type"])
-        self.m_db_debug                         = str(json_data["Database Debug"])
-        self.m_db_auto_commit                   = bool(json_data["Database Auto Commit"] == "True")
-        self.m_db_auto_flush                    = bool(json_data["Database Auto Flush"] == "True")
-        self.m_db_user_name                     = str(json_data["Database New User Name"])
-        self.m_db_user_password                 = str(json_data["Database New User Password"])
+        """ Constructor Serialization taking HTTP Post-ed JSON into Python members """
+        # Define Inputs and Outputs for the Job to serialize over HTTP
+        try:
 
-        # OUTPUTS:
-        self.m_results["Status"]                = "FAILED"
-        self.m_results["Error"]                 = ""
+            # INPUTS:
+            self.m_project_schema_file              = str(json_data["Schema File"])
+            self.m_db_host_endpoint                 = str(json_data["Database Host Endpoint"])
+            self.m_db_port                          = str(json_data["Database Port"])
+            self.m_db_name                          = str(json_data["Database Name"])
+            self.m_db_type                          = str(json_data["Database Type"])
+            self.m_db_debug                         = str(json_data["Database Debug"])
+            self.m_db_auto_commit                   = bool(json_data["Database Auto Commit"] == "True")
+            self.m_db_auto_flush                    = bool(json_data["Database Auto Flush"] == "True")
+            self.m_db_user_name                     = str(json_data["Database New User Name"])
+            self.m_db_user_password                 = str(json_data["Database New User Password"])
 
-        # MEMBERS:
-        self.m_debug                            = False
+            # OUTPUTS:
+            self.m_results["Status"]                = "FAILED"
+            self.m_results["Error"]                 = ""
+
+            # MEMBERS:
+            self.m_debug                            = False
+
+        # Return the exact Error with the failure:
+        except Exception,e:
+
+            import os, traceback
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            reason = json.dumps({ "Module" : str(self.__class__.__name__), "Error Type" : str(exc_type.__name__), "Line Number" : exc_tb.tb_lineno, "Error Message" : str(exc_obj.message), "File Name" : str(os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]) })
+            raise Exception(reason)
 
     # end of  __init__
 
@@ -49,6 +60,7 @@ class RA_FlowStacks_ApplySchemaChanges(FSWebTierBaseWorkItem):
         error_msg                   = ""
         path_to_schema_file         = self.m_project_schema_file.replace(".py", '')
         self.m_state                = "Results"
+        last_class_name             = "No Class Loaded Yet"
         
         try:
 
@@ -69,34 +81,38 @@ class RA_FlowStacks_ApplySchemaChanges(FSWebTierBaseWorkItem):
             session     = scoped_session(sessionmaker(autocommit=self.m_db_auto_commit,
                                                       autoflush=self.m_db_auto_flush,
                                                       bind=engine))
-
             
-            import inspect
-            error_msg       = "Walking through Schema File(" + str(path_to_schema_file) + ")"
-            Base            = declarative_base()
-            new_module      = __import__(path_to_schema_file)
-# __import__ is bad for security reasons            
-            the_job_module  = None
-            classes_to_add  = []
-            for name, job_module_obj in inspect.getmembers(new_module):
-                if inspect.isclass(job_module_obj) and (str(job_module_obj.__class__.__name__) == "DeclarativeMeta") and name != "Base":
-                    self.lg("Class DB Name(" + str(name) + ")", 5)
-                    job_module_obj.__table__.create(engine, checkfirst=True)
+            try:
+                import inspect
+                error_msg       = "Walking through Schema File(" + str(path_to_schema_file) + ")"
+                Base            = declarative_base()
+                new_module      = __import__(path_to_schema_file)
+                the_job_module  = None
+                classes_to_add  = []
+                for name, job_module_obj in inspect.getmembers(new_module):
+                    if inspect.isclass(job_module_obj) and (str(job_module_obj.__class__.__name__) == "DeclarativeMeta") and name != "Base":
+                        last_class_name = str(job_module_obj.__class__.__name__)
+                        self.lg("Class DB Name(" + str(last_class_name) + ")", 5)
+                        job_module_obj.__table__.create(engine, checkfirst=True)
 
-            self.lg("Found Schema Classes(" + str(len(classes_to_add)) + ")", 5)
+                self.lg("Found Schema Classes(" + str(len(classes_to_add)) + ")", 5)
 
-            error_msg   = "Creating All Schema Changes"
-            error_msg   = "Commiting All Schema Classes"
-            session.commit()
+                error_msg   = "Commiting All Schema Classes"
+                session.commit()
+
+            except Exception,f:
+                self.m_results["Status"]    = "FAILED"
+                self.m_results["Error"]     = "Applying DB Schema Loading had Exception(" + str(f) + ") with Last Class(" + str(last_class_name) + ")"
+                return None
 
             self.m_results["Status"]    = "SUCCESS"
             self.m_results["Error"]     = ""
 
         except Exception,e:
 
-            self.lg("Creating New User Database Failed Error(" + str(error_msg) + ") Exception(" + str(e) + ")", 5)
+            self.lg("Applying New User Database Failed Error(" + str(error_msg) + ") Exception(" + str(e) + ")", 5)
             self.m_results["Status"]    = "FAILED"
-            self.m_results["Error"]     = error_msg
+            self.m_results["Error"]     = "Applying DB Schema had Exception(" + str(f) + ") with Last Class(" + str(last_class_name) + ")"
 
 
         self.lg("Done Module Startup State(" + self.m_state + ")", 5)

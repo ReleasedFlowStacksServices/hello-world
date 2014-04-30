@@ -1,4 +1,4 @@
-import sys, uuid
+import sys, uuid, json
 from datetime                       import datetime, date, timedelta
 
 sys.path.append("/flowstacks/public-cloud-src")
@@ -11,19 +11,33 @@ class RA_SendEmailTemplateToUsers(FSWebTierBaseWorkItem):
     def __init__(self, json_data):
         FSWebTierBaseWorkItem.__init__(self, "RA_SETTU", json_data)
 
-        # INPUTS:
-        self.m_user_name                        = str(json_data["User Name"])
-        self.m_user_email                       = str(json_data["User Email Address"])
-        self.m_from                             = str(json_data["From"])
-        self.m_subject                          = str(json_data["Subject"])
-        self.m_email_template                   = str(json_data["Email Template"])
-        self.m_gmail_user                       = str(json_data["Gmail User"])
-        self.m_gmail_password                   = str(json_data["Gmail Password"])
+        """ Constructor Serialization taking HTTP Post-ed JSON into Python members """
+        # Define Inputs and Outputs for the Job to serialize over HTTP
+        try:
+
+            # INPUTS:
+            self.m_user_name                        = str(json_data["User Name"])
+            self.m_user_email                       = str(json_data["User Email Address"])
+            self.m_from                             = str(json_data["From"])
+            self.m_subject                          = str(json_data["Subject"])
+            self.m_email_template                   = str(json_data["Email Template"])
+            self.m_gmail_user                       = str(json_data["Gmail User"])
+            self.m_gmail_password                   = str(json_data["Gmail Password"])
         
-        # OUTPUTS:
-        self.m_results["Status"]                = "FAILED"
+            # OUTPUTS:
+            self.m_results["Status"]                = "FAILED"
+            self.m_results["Error"]                 = ""
         
-        # MEMBERS:
+            # MEMBERS:
+            self.m_debug                            = False
+
+        # Return the exact Error with the failure:
+        except Exception,e:
+
+            import os, traceback
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            reason = json.dumps({ "Module" : str(self.__class__.__name__), "Error Type" : str(exc_type.__name__), "Line Number" : exc_tb.tb_lineno, "Error Message" : str(exc_obj.message), "File Name" : str(os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]) })
+            raise Exception(reason)
 
     # end of  __init__
 

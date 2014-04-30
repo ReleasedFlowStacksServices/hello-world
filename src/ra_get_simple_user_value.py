@@ -1,4 +1,4 @@
-import sys, uuid
+import sys, uuid, json
 from datetime                       import datetime, date, timedelta
 
 sys.path.append("/flowstacks/public-cloud-src")
@@ -11,15 +11,30 @@ class RA_GetSimpleUserValue(FSWebTierBaseWorkItem):
     def __init__(self, json_data):
         FSWebTierBaseWorkItem.__init__(self, "RA_GSUV", json_data)
 
-        # INPUTS:
-        self.m_storage_key_id                   = str(json_data["Storage Key ID"])
+        """ Constructor Serialization taking HTTP Post-ed JSON into Python members """
+        # Define Inputs and Outputs for the Job to serialize over HTTP
+        try:
 
-        # OUTPUTS:
-        self.m_results["Status"]                = "FAILED"
-        self.m_results["Storage Key ID"]        = self.m_storage_key_id
-        self.m_results["Stored Value"]          = "NO VALUE FOUND" 
+            # INPUTS:
+            self.m_storage_key_id                   = str(json_data["Storage Key ID"])
 
-        # MEMBERS:
+            # OUTPUTS:
+            self.m_results["Status"]                = "FAILED"
+            self.m_results["Error"]                 = ""
+            self.m_results["Storage Key ID"]        = self.m_storage_key_id
+            self.m_results["Stored Value"]          = "NO VALUE FOUND" 
+
+            # MEMBERS:
+            self.m_debug                            = False
+        
+        # Return the exact Error with the failure:
+        except Exception,e:
+
+            import os, traceback
+            exc_type, exc_obj, exc_tb = sys.exc_info()
+            reason = json.dumps({ "Module" : str(self.__class__.__name__), "Error Type" : str(exc_type.__name__), "Line Number" : exc_tb.tb_lineno, "Error Message" : str(exc_obj.message), "File Name" : str(os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]) })
+            raise Exception(reason)
+
 
     # end of  __init__
 

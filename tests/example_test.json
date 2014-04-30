@@ -1,0 +1,15 @@
+{
+    "Test Details"  : {
+        "Name"          : "Test Example",
+        "Description"   : "Test Description",
+        "Test Type"     : "Black Box Testing",
+        "Version"       : 1,
+        "Job Module"    : "your module name"
+    },
+    "Test API Inputs"   : {
+        "This is an Input Key"  : "Example Test Pass Through Value"
+    },
+    "Expected Test API Outputs"  : {
+        "This is an Output Key" : "Example Test Pass Through Value"
+    }
+}

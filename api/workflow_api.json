@@ -1,8 +1,8 @@
 {
     "FlowStacks Workflow Project Description"  : {
-        "Version"               : 1,
-        "Purpose"               : "FlowStacks Hello World",
-        "Contact"               : "common@flowstacks.com",
+        "Version"               : 2,
+        "Purpose"               : "The FlowStacks Hello World Repository for Learning How to Use, Develop, Test, and Integrate with a Deployed FlowStacks REST API Endpoint Service with Your Own Applications and Systems",
+        "Contact"               : "support@flowstacks.com",
         "Developer Website"     : "flowstacks.com",
         "Market"                : "Hello World",
         "Industry"              : "Hello World",
@@ -14,10 +14,10 @@
         {
             "Meta Data"     : {
                 "Module Name"   : "An Example Module Name",
-                "Description"   : "A Description of this Module and its purpose",
+                "Description"   : "A Description of this Job and its purpose",
                 "Author ID"     : "Your Name",
                 "Contact"       : "your_email@email.com",
-                "Version"       : "1",
+                "Version"       : "2",
                 "Copyright"     : "2014"
             },
             "API Data"      : {
@@ -29,7 +29,8 @@
                 },
                 "Outputs"       : {
                                     "Status"                : "String",
-                                    "This is an Output Key" : "String"
+                                    "This is an Output Key" : "String",
+                                    "Error"                 : "String"
                 }
             }
         },
@@ -38,8 +39,8 @@
                 "Module Name"   : "Delete Simple User Value",
                 "Description"   : "Delete the Simple User Value stored on the Environment in the Storage Key ID",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2013"
             },
             "API Data"      : {
@@ -52,7 +53,8 @@
                 "Outputs"       : {
                                     "Status"                : "String",
                                     "Stored Value"          : "String",
-                                    "Storage Key ID"        : "String"
+                                    "Storage Key ID"        : "String",
+                                    "Error"                 : "String"
                 }
             }
         },
@@ -61,8 +63,8 @@
                 "Module Name"   : "Get Simple User Value",
                 "Description"   : "Get the Simple User Value stored on the Environment in the Storage Key ID",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2013"
             },
             "API Data"      : {
@@ -75,7 +77,8 @@
                 "Outputs"       : {
                                     "Status"                : "String",
                                     "Storage Key ID"        : "String",
-                                    "Stored Value"          : "String"
+                                    "Stored Value"          : "String",
+                                    "Error"                 : "String"
                 }
             }
         },
@@ -84,8 +87,8 @@
                 "Module Name"   : "Send Email Template To User",
                 "Description"   : "Send an email template that is filled-in by this module to the users.  Replaces <USER.NAME> with the name field.",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2013"
             },
             "API Data"      : {
@@ -102,7 +105,8 @@
                                     "Gmail Password"        : "String"
                 },
                 "Outputs"       : {
-                                    "Status"                : "String"
+                                    "Status"                : "String",
+                                    "Error"                 : "String"
                 }
             }
         },
@@ -111,8 +115,8 @@
                 "Module Name"   : "Store Simple User Value",
                 "Description"   : "Store the Simple User Value into the Environment",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2013"
             },
             "API Data"      : {
@@ -125,7 +129,8 @@
                 },
                 "Outputs"       : {               
                                     "Status"                : "String",
-                                    "Storage Key ID"        : "String"
+                                    "Storage Key ID"        : "String",
+                                    "Error"                 : "String"
                 }
             }
         },
@@ -134,8 +139,8 @@
                 "Module Name"   : "Create User Database",
                 "Description"   : "Create User Database",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2014"
             },
             "API Data"      : {
@@ -166,8 +171,8 @@
                 "Module Name"   : "Delete User Database",
                 "Description"   : "Delete User Database",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2014"
             },
             "API Data"      : {
@@ -198,8 +203,8 @@
                 "Module Name"   : "Apply Schema Changes",
                 "Description"   : "Apply Schema Changes",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2014"
             },
             "API Data"      : {
@@ -207,7 +212,6 @@
                 "Module"        : "ra_apply_schema_changes",
                 "Class Name"    : "RA_FlowStacks_ApplySchemaChanges",
                 "Inputs"        : {
-                                    "FlowStacks Project Token"          : "String",
                                     "Schema File"                       : "String",
                                     "Database Host Endpoint"            : "String",
                                     "Database Port"                     : "String",
@@ -230,8 +234,8 @@
                 "Module Name"   : "Create New Database Record",
                 "Description"   : "Creates a new database record",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2014"
             },
             "API Data"      : {
@@ -252,17 +256,17 @@
         },
         {
             "Meta Data"     : {
-                "Module Name"   : "Get User Accounts",
-                "Description"   : "Get User Accounts",
+                "Module Name"   : "Get Remote User Accounts",
+                "Description"   : "Get Remote User Accounts",
                 "Author ID"     : "FlowStacks Inc.",
-                "Contact"       : "common@flowstacks.com",
-                "Version"       : "1",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
                 "Copyright"     : "2014"
             },
             "API Data"      : {
-                "Filename"      : "src/ra_db_get_user_accounts.py",
-                "Module"        : "ra_db_get_user_accounts",
-                "Class Name"    : "RA_DB_GetUserAccounts",
+                "Filename"      : "src/ra_db_remote_get_user_accounts.py",
+                "Module"        : "ra_db_remote_get_user_accounts",
+                "Class Name"    : "RA_DBR_GetUserAccounts",
                 "Inputs"        : {
                                     "DB Conn Str"           : "String",
                                     "Query Type"            : "String",
@@ -279,7 +283,54 @@
                                     "Error"     : "String"
                 }
             }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Create User Status",
+                "Description"   : "Create User Status",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_db_flowstacks_create_user_status.py",
+                "Module"        : "ra_db_flowstacks_create_user_status",
+                "Class Name"    : "RA_DBF_CreateUserStatus",
+                "Inputs"        : {
+                                    "DB To Use"         : "String",
+                                    "New User Status"   : "String"
+                },
+                "Outputs"       : {
+                                    "Status"            : "String",
+                                    "Records"           : "List",
+                                    "Error"             : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Get User Status",
+                "Description"   : "Get User Status",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_db_flowstacks_get_user_status.py",
+                "Module"        : "ra_db_flowstacks_get_user_status",
+                "Class Name"    : "RA_DBF_GetUserStatus",
+                "Inputs"        : {
+                                    "DB To Use"         : "String",
+                                    "User Status"       : "String"
+                },
+                "Outputs"       : {
+                                    "Status"            : "String",
+                                    "Records"           : "List",
+                                    "Error"             : "String"
+                }
+            }
         }
     ]
 }
-
