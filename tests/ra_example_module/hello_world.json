@@ -6,7 +6,8 @@
     },
     "Expected Module Outputs" : {
         "Status"                : "SUCCESS",
-        "This is an Output Key" : "HELLO WORLD"
+        "This is an Output Key" : "HELLO WORLD",
+        "Error"                 : ""
     }
 }
 

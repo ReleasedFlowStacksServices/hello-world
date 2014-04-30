@@ -6,7 +6,8 @@
     "Expected Module Outputs" : {
         "Status"                : "SUCCESS",
         "Storage Key ID"        : "Storage_Key_EXAMPLE",
-        "Stored Value"          : "No Stored Value Found in Key(Storage_Key_EXAMPLE)"
+        "Stored Value"          : "No Stored Value Found in Key(Storage_Key_EXAMPLE)",
+        "Error"                 : ""
     }
 }
 

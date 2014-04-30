@@ -8,7 +8,8 @@
     "Expected Module Outputs" : {
         "Status"                : "FAILED",
         "Message"               : "Update Failed to Find Stored Value in Key(Storage_Key_EXAMPLE)",
-        "Storage Key ID"        : "Storage_Key_EXAMPLE"
+        "Storage Key ID"        : "Storage_Key_EXAMPLE",
+        "Error"                 : ""
     }
 }
 

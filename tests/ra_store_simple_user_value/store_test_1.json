@@ -6,7 +6,8 @@
     },
     "Expected Module Outputs" : {
         "Status"                : "SUCCESS",
-        "Storage Key ID"        : "<Dynamic Value>"
+        "Storage Key ID"        : "<Dynamic Value>",
+        "Error"                 : ""
     }
 }
 
