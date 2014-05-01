@@ -14,7 +14,7 @@
         {
             "Meta Data"     : {
                 "Module Name"   : "An Example Module Name",
-                "Description"   : "A Description of this Job and its purpose",
+                "Description"   : "A Description of this Job Module and its purpose",
                 "Author ID"     : "Your Name",
                 "Contact"       : "your_email@email.com",
                 "Version"       : "2",
@@ -323,7 +323,9 @@
                 "Class Name"    : "RA_DBF_GetUserStatus",
                 "Inputs"        : {
                                     "DB To Use"         : "String",
-                                    "User Status"       : "String"
+                                    "DB Record ID"      : "String",
+                                    "User Status"       : "String",
+                                    "Query Type"        : "String"
                 },
                 "Outputs"       : {
                                     "Status"            : "String",

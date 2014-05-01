@@ -21,7 +21,9 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
 
             # INPUTS:
             self.m_db_app_name                  = str(json_data["DB To Use"])
+            self.m_get_id                       = str(json_data["DB Record ID"])
             self.m_get_status                   = str(json_data["User Status"])
+            self.m_query_type                   = str(json_data["Query Type"])
 
             # OUTPUTS:
             self.m_results["Status"]            = "FAILED"
@@ -55,7 +57,6 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
 
         self.lg("Start Handle Module Startup", 5)
 
-        error_msg                   = ""
         self.m_state                = "Results"
         
         try:
@@ -64,22 +65,20 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
 
             self.create_database_record() 
 
-            db_result_hash = self.just_add_record_to_database(self.m_db_app_name, self.m_db_record)
+            self.m_query_type                   = str(json_data["Query Type"])
+            if   self.m_query_type  == "Get User Status String":
+                self.handle_get_user_status_by_string()
 
-            if db_result_hash["Status"] == "SUCCESS":
-                self.m_results["Status"]    = "SUCCESS"
-                self.m_results["Error"]     = ""
+            elif self.m_query_type  == "Get User Status By ID":
+                self.handle_get_user_status_by_id()
 
             else:
-                self.lg("ERROR: Failed to Add Record(" + str(record) + ") to DB", 0)
-                self.m_results["Status"]    = "Failed to Add Database Record"
-                self.m_results["Error"]     = db_result_hash["Error"]
+                self.lg("Unsupported Query Type(" + str(self.m_query_type) + ")", 0)
+                self.m_results["Status"]    = "FAILED"
+                self.m_results["Error"]     = "Unsupported Query Type " + str(self.m_query_type)
 
         except Exception,e:
-
-            self.lg("Adding User Status Failed Error(" + str(error_msg) + ") Exception(" + str(e) + ")", 0)
-            self.m_results["Status"]    = "FAILED"
-            self.m_results["Error"]     = error_msg
+            self.lg("Adding Getting User Status Failed with Error(" + str(self.m_results["Error"]) + ") Exception(" + str(e) + ")", 0)
 
         # end of adding user record to db
 
@@ -105,13 +104,69 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
 #
 ###############################################################################
 
-
-    def create_database_record(self):
     
-        self.m_db_record    = LT_UserStatus(status = self.m_new_status)
+    def handle_get_user_status_by_string(self):
+            
+        self.lg("Getting User Status By String", 5)
+
+        self.m_db_record    = self.m_db_apps[self.m_db_app_name].m_session.query(LT_UserStatus).filter(LT_UserStatus.status == self.m_get_id).first()
+
+        self.lg("End Getting User Status By String(" + str(self.m_db_record) + ")", 5)
 
         return None
-    # end of create_database_record
+    # end of handle_get_user_status_by_string
+                
+
+    def handle_get_user_status_by_id(self):
+
+        self.lg("Getting User Status By ID", 5)
+        
+        self.m_db_record    = self.m_db_apps[self.m_db_app_name].m_session.query(LT_UserStatus).filter(LT_UserStatus.status == int(self.m_get_id)).first()
+        
+        self.lg("End Getting User Status By ID(" + str(self.m_db_record) + ")", 5)
+
+        return None
+    # end of handle_get_user_status_by_id
+
+
+    def convert_db_records_into_results(self):
+
+        self.lg("Convert DB Record", 5)
+
+        try:
+    
+            if(self.m_db_record):
+
+                db_hash = {}
+                db_hash = {
+                            "id"        : str(self.m_db_record.id), 
+                            "Status"    : str(self.m_db_record.status), 
+                }
+            
+                self.m_results["Status"]    = "SUCCESS"
+                self.m_results["Error"]     = ""
+                self.m_results["Records"]   = []
+                self.m_results["Records"].append(db_hash)
+
+            else:
+
+                self.m_results["Status"]    = "FAILED"
+                self.m_results["Error"]     = "Did Not Find User Status Match"
+
+            # end of if there are db records
+
+        except Exception,e:
+
+            self.lg("Convert Exception(" + str(e) + ")", 0)
+            self.m_results["Status"]    = "FAILED"
+            self.m_results["Error"]     = "Exception Getting User Status"
+
+        # end of Convert DB Record(s)  
+        
+        self.lg("End Convert DB Record", 5)
+            
+        return None
+    # end of convert_db_records_into_results
 
 
 ###############################################################################
@@ -139,6 +194,6 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
         return self.m_is_done
     # end of perform_task
 
-# end of RA_FlowStacks_DB_GetDeveloperAccount
+# end of RA_DBF_GetUserStatus
 
 
