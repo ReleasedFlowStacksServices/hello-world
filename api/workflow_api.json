@@ -231,6 +231,31 @@
         },
         {
             "Meta Data"     : {
+                "Module Name"   : "Update Simple User Value",
+                "Description"   : "Update the Simple User Value into the Environment",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "2",
+                "Copyright"     : "2013"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_update_simple_user_value.py",
+                "Module"        : "ra_update_simple_user_value",
+                "Class Name"    : "RA_UpdateSimpleUserValue",
+                "Inputs"        : {
+                                    "Access Token"          : "String",
+                                    "Storage Key ID"        : "String",
+                                    "Value To Update"       : "String"
+                },
+                "Outputs"       : {
+                                    "Status"                : "String",
+                                    "Storage Key ID"        : "String",
+                                    "Error"                 : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
                 "Module Name"   : "Create New Database Record",
                 "Description"   : "Creates a new database record",
                 "Author ID"     : "FlowStacks Inc.",
@@ -279,7 +304,7 @@
                 },
                 "Outputs"       : {
                                     "Status"    : "String",
-                                    "Records"   : "List",
+                                    "Record"    : "String",
                                     "Error"     : "String"
                 }
             }
@@ -303,7 +328,7 @@
                 },
                 "Outputs"       : {
                                     "Status"            : "String",
-                                    "Records"           : "List",
+                                    "Record"            : "String",
                                     "Error"             : "String"
                 }
             }
@@ -329,7 +354,32 @@
                 },
                 "Outputs"       : {
                                     "Status"            : "String",
-                                    "Records"           : "List",
+                                    "Record"            : "String",
+                                    "Error"             : "String"
+                }
+            }
+        },
+        {
+            "Meta Data"     : {
+                "Module Name"   : "Get User Account",
+                "Description"   : "Get User Account",
+                "Author ID"     : "FlowStacks Inc.",
+                "Contact"       : "support@flowstacks.com",
+                "Version"       : "1",
+                "Copyright"     : "2014"
+            },
+            "API Data"      : {
+                "Filename"      : "src/ra_db_flowstacks_get_user_account.py",
+                "Module"        : "ra_db_flowstacks_get_user_account",
+                "Class Name"    : "RA_DBF_GetUserAccount",
+                "Inputs"        : {
+                                    "DB To Use"         : "String",
+                                    "User Name"         : "String",
+                                    "Query Type"        : "String"
+                },
+                "Outputs"       : {
+                                    "Status"            : "String",
+                                    "Record"            : "String",
                                     "Error"             : "String"
                 }
             }

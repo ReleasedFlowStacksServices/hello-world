@@ -1,0 +1,15 @@
+{
+    "Module Index"      : 11,
+    "Module Inputs"     : {
+        "DB To Use"         : "DEVDB",
+        "New User Status"   : "ACTIVE"
+    },
+    "Expected Module Outputs": {
+        "Status"                    : "SUCCESS",
+        "Record"                    : {
+                                        "Status"    : "ACTIVE",
+                                        "ID"        : "1"
+        },
+        "Error"                     : ""
+    }
+}

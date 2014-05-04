@@ -26,7 +26,7 @@ class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
             # OUTPUTS:
             self.m_results["Status"]            = "FAILED"
             self.m_results["Error"]             = ""
-            self.m_results["Records"]           = []
+            self.m_results["Record"]            = {}
 
             # MEMBERS:
             self.m_db_record                    = None
@@ -67,8 +67,15 @@ class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
             db_result_hash = self.just_add_record_to_database(self.m_db_app_name, self.m_db_record)
 
             if db_result_hash["Status"] == "SUCCESS":
+
+                db_hash = {
+                            "ID"        : str(self.m_db_record.id),
+                            "Status"    : str(self.m_db_record.status),
+                }
+
                 self.m_results["Status"]    = "SUCCESS"
                 self.m_results["Error"]     = ""
+                self.m_results["Record"]    = db_hash
 
             else:
                 self.lg("ERROR: Failed to Add Record(" + str(self.m_db_record) + ") to DB", 0)
@@ -139,6 +146,6 @@ class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
         return self.m_is_done
     # end of perform_task
 
-# end of RA_FlowStacks_DB_GetDeveloperAccount
+# end of RA_DBF_CreateUserStatus
 
 

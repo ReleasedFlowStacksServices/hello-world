@@ -10,10 +10,10 @@ from connectors.redis.redis_pickle_application      import RedisPickleApplicatio
 from dev_db_schema                                  import LT_UserStatus, PT_UserAccount
 from prod_db_schema                                 import LT_UserStatus, PT_UserAccount
 
-class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
+class RA_DBF_GetUserAccount(FSWebTierBaseWorkItem):
 
     def __init__(self, json_data):
-        FSWebTierBaseWorkItem.__init__(self, "RA_DBF_CUS", json_data)
+        FSWebTierBaseWorkItem.__init__(self, "RA_DBF_GUA", json_data)
 
         """ Constructor Serialization taking HTTP Post-ed JSON into Python members """
         # Define Inputs and Outputs for the Job to serialize over HTTP
@@ -21,12 +21,13 @@ class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
 
             # INPUTS:
             self.m_db_app_name                  = str(json_data["DB To Use"])
-            self.m_new_status                   = str(json_data["New User Status"])
+            self.m_user_name                    = str(json_data["User Name"])
+            self.m_query_type                   = str(json_data["Query Type"])
 
             # OUTPUTS:
             self.m_results["Status"]            = "FAILED"
             self.m_results["Error"]             = ""
-            self.m_results["Records"]           = []
+            self.m_results["Record"]            = {}
 
             # MEMBERS:
             self.m_db_record                    = None
@@ -62,22 +63,21 @@ class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
             
             self.lg("Connect and Commit User DB(" + str(self.m_db_app_name) + ")", 5)
 
-            self.create_database_record() 
+            self.lg("Connect and to DB(" + str(self.m_db_app_name) + ")", 5)
 
-            db_result_hash = self.just_add_record_to_database(self.m_db_app_name, self.m_db_record)
+            self.connect(self.m_db_app_name)
 
-            if db_result_hash["Status"] == "SUCCESS":
-                self.m_results["Status"]    = "SUCCESS"
-                self.m_results["Error"]     = ""
+            if   self.m_query_type  == "Get User By Name":
+                self.handle_get_user_by_user_name()
 
             else:
-                self.lg("ERROR: Failed to Add Record(" + str(record) + ") to DB", 0)
-                self.m_results["Status"]    = "Failed to Add Database Record"
-                self.m_results["Error"]     = db_result_hash["Error"]
+                self.lg("Unsupported Query Type(" + str(self.m_query_type) + ")", 0)
+                self.m_results["Status"]    = "FAILED"
+                self.m_results["Error"]     = "Unsupported Query Type " + str(self.m_query_type)
 
         except Exception,e:
 
-            self.lg("Adding User Status Failed Error(" + str(error_msg) + ") Exception(" + str(e) + ")", 0)
+            self.lg("Getting User Account Failed Error(" + str(error_msg) + ") Exception(" + str(e) + ")", 0)
             self.m_results["Status"]    = "FAILED"
             self.m_results["Error"]     = error_msg
 
@@ -93,6 +93,8 @@ class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
 
         self.lg("Processing Results", 5)
 
+        self.convert_db_records_into_results()
+
         self.lg("Done Processing Results", 5)
 
         return None
@@ -106,12 +108,59 @@ class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
 ###############################################################################
 
 
-    def create_database_record(self):
-    
-        self.m_db_record    = LT_UserStatus(status = self.m_new_status)
+    def handle_get_user_by_user_name(self):
+
+        self.lg("Getting User By Name", 5)
+
+        self.m_db_record    = self.m_session.query(PT_UserStatus).filter(PT_UserStatus.user_name == self.m_user_name).first()
+
+        self.lg("End Getting User By Name(" + str(self.m_db_record) + ")", 5)
 
         return None
-    # end of create_database_record
+    # end of handle_get_user_by_user_name
+
+
+    def convert_db_records_into_results(self):
+
+        self.lg("Convert DB Record", 5)
+
+        try:
+
+            if(self.m_db_record):
+
+                db_hash = {}
+                db_hash = {
+                            "ID"            : str(self.m_db_record.id),
+                            "First Name"    : str(self.m_db_record.status),
+                            "Last Name"     : str(self.m_db_record.status),
+                            "User Name"     : str(self.m_db_record.status),
+                            "Email"         : str(self.m_db_record.status),
+                            "Status"        : str(self.m_db_record.user_status_sym.status)
+                }
+
+                self.m_results["Status"]    = "SUCCESS"
+                self.m_results["Error"]     = ""
+                self.m_results["Record"]    = db_hash
+
+            else:
+
+                self.m_results["Status"]    = "FAILED"
+                self.m_results["Error"]     = "Did Not Find User"
+
+            # end of if there are db records
+
+        except Exception,e:
+
+            self.lg("Convert Exception(" + str(e) + ")", 0)
+            self.m_results["Status"]    = "FAILED"
+            self.m_results["Error"]     = "Exception Getting User"
+
+        # end of Convert DB Record(s)  
+
+        self.lg("End Convert DB Record", 5)
+
+        return None
+    # end of convert_db_records_into_results
 
 
 ###############################################################################
@@ -139,6 +188,6 @@ class RA_DBF_CreateUserStatus(FSWebTierBaseWorkItem):
         return self.m_is_done
     # end of perform_task
 
-# end of RA_FlowStacks_DB_GetDeveloperAccount
+# end of RA_DBF_GetUserAccount
 
 

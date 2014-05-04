@@ -1,0 +1,17 @@
+{
+    "Module Index"      : 12,
+    "Module Inputs"     : {
+        "DB Record ID"      : "",
+        "DB To Use"         : "DEVDB",
+        "User Status"       : "INACTIVE",
+        "Query Type"        : "Get User Status String"
+    },
+    "Expected Module Outputs": {
+        "Status"            : "SUCCESS",
+        "Record"            : {
+                                "Status"    : "INACTIVE",
+                                "ID"        : "2"
+        },
+        "Error": ""
+    }
+}

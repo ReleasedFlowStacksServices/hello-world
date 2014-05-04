@@ -28,7 +28,7 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
             # OUTPUTS:
             self.m_results["Status"]            = "FAILED"
             self.m_results["Error"]             = ""
-            self.m_results["Records"]           = []
+            self.m_results["Record"]            = {}
 
             # MEMBERS:
             self.m_db_record                    = None
@@ -60,12 +60,11 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
         self.m_state                = "Results"
         
         try:
-            
-            self.lg("Connect and Commit User DB(" + str(self.m_db_app_name) + ")", 5)
 
-            self.create_database_record() 
+            self.lg("Connect and to DB(" + str(self.m_db_app_name) + ")", 5)
 
-            self.m_query_type                   = str(json_data["Query Type"])
+            self.connect(self.m_db_app_name)
+
             if   self.m_query_type  == "Get User Status String":
                 self.handle_get_user_status_by_string()
 
@@ -92,6 +91,8 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
 
         self.lg("Processing Results", 5)
 
+        self.convert_db_records_into_results()
+
         self.lg("Done Processing Results", 5)
 
         return None
@@ -106,23 +107,23 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
 
     
     def handle_get_user_status_by_string(self):
-            
+
         self.lg("Getting User Status By String", 5)
 
-        self.m_db_record    = self.m_db_apps[self.m_db_app_name].m_session.query(LT_UserStatus).filter(LT_UserStatus.status == self.m_get_id).first()
+        self.m_db_record    = self.m_session.query(LT_UserStatus).filter(LT_UserStatus.status == self.m_get_status).first()
 
         self.lg("End Getting User Status By String(" + str(self.m_db_record) + ")", 5)
 
         return None
     # end of handle_get_user_status_by_string
-                
+
 
     def handle_get_user_status_by_id(self):
 
         self.lg("Getting User Status By ID", 5)
-        
-        self.m_db_record    = self.m_db_apps[self.m_db_app_name].m_session.query(LT_UserStatus).filter(LT_UserStatus.status == int(self.m_get_id)).first()
-        
+
+        self.m_db_record    = self.m_session.query(LT_UserStatus).filter(LT_UserStatus.status == int(self.m_get_id)).first()
+
         self.lg("End Getting User Status By ID(" + str(self.m_db_record) + ")", 5)
 
         return None
@@ -134,19 +135,18 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
         self.lg("Convert DB Record", 5)
 
         try:
-    
+
             if(self.m_db_record):
 
                 db_hash = {}
                 db_hash = {
-                            "id"        : str(self.m_db_record.id), 
-                            "Status"    : str(self.m_db_record.status), 
+                            "ID"        : str(self.m_db_record.id),
+                            "Status"    : str(self.m_db_record.status),
                 }
-            
+
                 self.m_results["Status"]    = "SUCCESS"
                 self.m_results["Error"]     = ""
-                self.m_results["Records"]   = []
-                self.m_results["Records"].append(db_hash)
+                self.m_results["Record"]    = db_hash
 
             else:
 
@@ -162,9 +162,9 @@ class RA_DBF_GetUserStatus(FSWebTierBaseWorkItem):
             self.m_results["Error"]     = "Exception Getting User Status"
 
         # end of Convert DB Record(s)  
-        
+
         self.lg("End Convert DB Record", 5)
-            
+
         return None
     # end of convert_db_records_into_results
 
